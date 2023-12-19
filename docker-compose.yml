@@ -1,0 +1,25 @@
+version: '3'
+
+services:
+  cloud_sql_client_prod:
+    image: mysql:latest
+    container_name: cloud_sql_prod_container
+    command: ["sh", "-c", "exec mysql -h 34.100.210.215 -P 3306 -u  -p "]
+    ports:
+      - "3306:3306"
+    depends_on:
+      - stg_mysql
+
+  cloud_sql_client_stg:
+    image: mysql:latest
+    container_name: cloud_sql_stg_container
+    command: ["sh", "-c", "exec mysql -h 34.100.134.111 -P 3307 -u  -p "]
+    ports:
+      - "3307:3307"
+    depends_on:
+      - prod_mysql
+
+networks:
+  default:
+    external:
+      name: bridge
